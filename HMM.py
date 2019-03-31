@@ -14,7 +14,6 @@ def constructEmissions(pr_correct,adj):
 	## Your code goes here.
 
     # Each row of the Emission matrix must sum to 1.
-    #
 
     # Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
     count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -47,7 +46,7 @@ def constructEmissions(pr_correct,adj):
          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-    #
+    # Counts the occurrences of 1s in each row of the matrix adj
     for x in range(0, 26):
         for y in range(0, 26):
             if adj[x][y] == 1:
@@ -56,11 +55,17 @@ def constructEmissions(pr_correct,adj):
     for i in range(0, 26):
         for j in range(0, 26):
             if i == j:
+                # The probability that the texter intended to type a letter is the same
+                # as the probability of going from a state 'X' to the same state 'X'.
                 b[i][j] = pr_correct;
+
             elif adj[i][j] == 1:
+                # All other probabilities of transitioning are identical and must sum to 1.
                 b[i][j] = (1 - pr_correct) / count[i];
+
             print(b[i][j], end='');
             print(", ", end='');
+
         print("\n");
     return b;
 
