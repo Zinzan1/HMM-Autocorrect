@@ -1,24 +1,24 @@
 def constructEmissions(pr_correct,adj):
-    ## This function takes in a matrix detailing the adjacent letters on a keyboard, and the
+    #  This function takes in a matrix detailing the adjacent letters on a keyboard, and the
     #  probability of hitting the correct key and outputs a matrix of emission probabilities
     #
-    ## INPUT
-    # pr_correct - the probability of correctly hitting the intended key;
-    # adj - a 26 x 26 matrix with adj[i][j] = 1 if the i'th letter in the alphabet is adjacent
-    # to the j'th letter.
+    #  INPUT
+    #  pr_correct - the probability of correctly hitting the intended key;
+    #  adj - a 26 x 26 matrix with adj[i][j] = 1 if the i'th letter in the alphabet is adjacent
+    #  to the j'th letter.
     #
-    # OUTPUT
-    # b - a 26 x 26 matrix with b[i][j] being the probability of hitting key j if you intended
-    # to hit key i (the probabilities of hitting all adjacent keys are identical).
+    #  OUTPUT
+    #  b - a 26 x 26 matrix with b[i][j] being the probability of hitting key j if you intended
+    #  to hit key i (the probabilities of hitting all adjacent keys are identical).
 
-	## Your code goes here.
+    #  Your code goes here.
 
-    # Each row of the Emission matrix must sum to 1.
+    #  Each row of the Emission matrix must sum to 1.
 
-    # Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
+    #  Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
     count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    # The returned matrix. Initialised with all zero entries.
+    #  The returned matrix. Initialised with all zero entries.
     b = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -70,39 +70,70 @@ def constructEmissions(pr_correct,adj):
     return b;
 
 def constructTransitions(filename):
-    # This function constructs tranisition matricies for lowercase characters.
-    # It is assumed that the file 'filename' only contains lowercase characters
-    # and whitespace.
-    ## INPUT
+    #  This function constructs transition matrices for lowercase characters.
+    #  It is assumed that the file 'filename' only contains lowercase characters
+    #  and whitespace.
+    #  INPUT
     #  filename is the file containing the text from which we wish to develop a
     #  Markov process.
     #
-    ## OUTPUT
+    #  OUTPUT
     #  p is a 26 x 26 matrix containing the probabilities of transition from a
     #  state to another state, based on the frequencies observed in the text.
     #  prior is a vector of prior probabilities based on how often each character
     #  appears in the text
 
-    ## Read the file into a sting called text
+    #  Read the file into a sting called text
     with open('bible.txt', 'r') as myfile:
         text = myfile.read()
 
-	## Your code goes here.
+    #  Your code goes here.
+
+    #  Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
+    prior = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    #  The returned matrix. Initialised with all zero entries.
+    p = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
     return (p, prior)
 
 def HMM(p,pi,b,y):
-    ## This function implements the Viterbi algorithm, to find the most likely
-    # sequence of states given some set of observations.
+    #  This function implements the Viterbi algorithm, to find the most likely
+    #  sequence of states given some set of observations.
     #
-    ## INPUT
+    #  INPUT
     #  p is a matrix of transition probabilies for states x;
     #  pi is a vector of prior distributions for states x;
     #  b is a matrix of emission probabilities;
     #  y is a vector of observations.
     #
-    ## OUTPUT
-    # x is the most likely sequence of states, given the inputs.
+    #  OUTPUT
+    #  x is the most likely sequence of states, given the inputs.
 
     n=len(y)
     m=len(pi)
@@ -113,13 +144,13 @@ def HMM(p,pi,b,y):
     ## You must complete the code below
     for i in range(26):
         # Your code goes here (initialisation)
-
+        print("initialisation");
     for t in range(1,n):
         for k in range(26):
-			gamma[k,t]=0
+            gamma[k,t]=0;
             for j in range(26):
                 # Your code goes here
-                    
+                print("Hello");
     best=0
     x=[]
     for t in range(n):
@@ -131,8 +162,9 @@ def HMM(p,pi,b,y):
             best=gamma[k,n-1]
             x[n-1]=k
 
-    for i = range(n-2,-1,-1):
+    for i in range(n-2,-1,-1):
         # Your code goes here
+        print(n);
 
     return x
 
@@ -147,8 +179,8 @@ def main():
     msgs.append('qe zfr xtztvkmh')
     msgs.append('wgzf tjmr will uiu xjoq jp ywfw')
 
-    #The probability of hitting the intended key.
-    pr_correct= # Complete this line
+    #  The probability of hitting the intended key.
+    pr_correct = 0.5  # Complete this line
 
     # An adjacency matrix, adj(i,j) set to 1 if the i'th letter in the alphabet is next
     # to the j'th letter in the alphabet on the keyboard.
@@ -156,7 +188,7 @@ def main():
 
     # Call a function to construct the emission probabilities of hitting a key
     # given you tried to hit a (potentially) different key.
-    b=constructEmissions(pr_correct,adj)
+    b=constructEmissions(pr_correct, adj)
 
     # Call a function to construct transmission probabilities and a prior distribution
     # from the King James Bible.
@@ -165,18 +197,17 @@ def main():
     # Run the Viterbi algorithm on each word of the messages to determine the
     # most likely sequence of characters.
     for msg in msgs:
-        s_in = msg.split(' ') #divide each message into a list of words
+        s_in = msg.split(' ')  #divide each message into a list of words
 
-        output='';
+        output = '';
         
         for i in range(len(s_in)):
             y=[]
             
             for j in range(len(s_in[i])):
-                y.append(ord(s_in[i][j])-97) #convert the letters to numbers 0-25
-            end
+                y.append(ord(s_in[i][j])-97)  #convert the letters to numbers 0-25
 
-            x=HMM(p,prior,b,y); #perform the Viterbi algorithm
+            x = HMM(p,prior,b,y);  #perform the Viterbi algorithm
 
             output=''
             for j in range(len(x)):
@@ -185,8 +216,8 @@ def main():
             if i!=len(s_in)-1:
                 output=output+' ' #recreate the message
                 
-        print(msg) #display received message
-        print(output) #display decoded message
+        print(msg)  #display received message
+        print(output)  #display decoded message
         print('')
 
 if __name__ == "__main__":
