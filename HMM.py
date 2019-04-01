@@ -199,11 +199,12 @@ def HMM(p,pi,b,y):
         # Current state
         for k in range(26):
             gamma[k,t]=0;
+            phi[k,t]=0;
             # Next state
             for j in range(26):
                 # Your code goes here
-                if gamma[k,t] < b[j][y[t]] * p[k][j] * gamma[j,t-1]:
-                    gamma[k,t] = b[j][y[t]] * p[k][j] * gamma[j,t-1]
+                if gamma[k,t] < b[j][y[t]] * p[j][k] * gamma[j,t-1]:
+                    gamma[k,t] = b[j][y[t]] * p[j][k] * gamma[j,t-1]
                     phi[k,t] = j
                 print("",end='');
     best=0
@@ -219,7 +220,9 @@ def HMM(p,pi,b,y):
 
     for i in range(n-2,-1,-1):
         # Your code goes here
-        print("",end='');
+
+        x[i] = phi[x[i+1],i+1]
+        print("",end='')
 
     return x
 
@@ -263,8 +266,8 @@ def main():
                 y.append(ord(s_in[i][j])-97)  #convert the letters to numbers 0-25
 
             x = HMM(p,prior,b,y);  #perform the Viterbi algorithm
-
-            output=''
+            if i==0:
+                output=''
             for j in range(len(x)):
                 output=output+chr(x[j]+97) #convert the states x back to letters
                     
