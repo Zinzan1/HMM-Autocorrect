@@ -155,17 +155,17 @@ def constructTransitions(filename):
 
     #  Debugging code for observing matrix state
 
-    # for x in range(0, 26):
-    #     for y in range(0, 26):
-    #         print(p[x][y], end='');
-    #         print(", ", end='');
-    #     print("\n")
-    #
-    # for z in range(0, 26):
-    #     print(prior[z], end='');
-    #     print(", ", end='');
-    #
-    # print("\n");
+    for x in range(0, 26):
+        for y in range(0, 26):
+            print(p[x][y], end='');
+            print(", ", end='');
+        print("\n")
+
+    for z in range(0, 26):
+        print(prior[z], end='');
+        print(", ", end='');
+
+    print("\n");
 
     #  Debugging code ends here
     return (p, prior)
@@ -192,12 +192,19 @@ def HMM(p,pi,b,y):
     ## You must complete the code below
     for i in range(26):
         # Your code goes here (initialisation)
+        gamma[i,0] = pi[i] * b[i][y[0]]
         print("",end='');
+    # Time period
     for t in range(1,n):
+        # Current state
         for k in range(26):
             gamma[k,t]=0;
+            # Next state
             for j in range(26):
                 # Your code goes here
+                if gamma[k,t] < b[j][y[t]] * p[k][j] * gamma[j,t-1]:
+                    gamma[k,t] = b[j][y[t]] * p[k][j] * gamma[j,t-1]
+                    phi[k,t] = j
                 print("",end='');
     best=0
     x=[]
