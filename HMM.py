@@ -63,10 +63,10 @@ def constructEmissions(pr_correct,adj):
                 # All other probabilities of transitioning are identical and must sum to 1.
                 b[i][j] = (1 - pr_correct) / count[i];
 
-            print(b[i][j], end='');
-            print(", ", end='');
+            # print(b[i][j], end='');
+            # print(", ", end='');
 
-        print("\n");
+        # print("\n");
     return b;
 
 def constructTransitions(filename):
@@ -89,8 +89,13 @@ def constructTransitions(filename):
 
     #  Your code goes here.
 
+    alphabetDict = {"a":0,  "b":1,  "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7,  "i":8,  "j":9,  "k":10, "l":11, "m":12,
+                    "n":13, "o":14, "p":15, "q":16, "r":17, "s":18, "t":19, "u":20, "v":21, "w":22, "x":23, "y":24, "z":25}
+
     #  Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
     prior = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    transCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     #  The returned matrix. Initialised with all zero entries.
     p = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -120,6 +125,49 @@ def constructTransitions(filename):
          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
+    count = 0
+
+    previousLetter = " "
+    currentLetter = " "
+
+    for c in text:
+        if c == " ":
+            previousLetter = " "
+            currentLetter = " "
+            continue
+
+        elif c in alphabetDict:
+            previousLetter = currentLetter
+            currentLetter = c
+            indexJ = alphabetDict.get(currentLetter)
+            prior[indexJ] += 1
+            count += 1
+
+            if previousLetter in alphabetDict:
+                indexI = alphabetDict.get(previousLetter)
+                p[indexI][indexJ] += 1
+                transCount[indexI] += 1
+
+    for i in range(0, 26):
+        prior[i] = prior[i] / count
+        for j in range(0, 26):
+                p[i][j] = p[i][j] / transCount[i];
+
+    #  Debugging code for observing matrix state
+
+    # for x in range(0, 26):
+    #     for y in range(0, 26):
+    #         print(p[x][y], end='');
+    #         print(", ", end='');
+    #     print("\n")
+    #
+    # for z in range(0, 26):
+    #     print(prior[z], end='');
+    #     print(", ", end='');
+    #
+    # print("\n");
+
+    #  Debugging code ends here
     return (p, prior)
 
 def HMM(p,pi,b,y):
@@ -144,13 +192,13 @@ def HMM(p,pi,b,y):
     ## You must complete the code below
     for i in range(26):
         # Your code goes here (initialisation)
-        print("initialisation");
+        print("",end='');
     for t in range(1,n):
         for k in range(26):
             gamma[k,t]=0;
             for j in range(26):
                 # Your code goes here
-                print("Hello");
+                print("",end='');
     best=0
     x=[]
     for t in range(n):
@@ -164,7 +212,7 @@ def HMM(p,pi,b,y):
 
     for i in range(n-2,-1,-1):
         # Your code goes here
-        print(n);
+        print("",end='');
 
     return x
 
