@@ -1,4 +1,4 @@
-def constructEmissions(pr_correct,adj):
+def constructEmissions(pr_correct, adj):
     #  This function takes in a matrix detailing the adjacent letters on a keyboard, and the
     #  probability of hitting the correct key and outputs a matrix of emission probabilities
     #
@@ -11,12 +11,10 @@ def constructEmissions(pr_correct,adj):
     #  b - a 26 x 26 matrix with b[i][j] being the probability of hitting key j if you intended
     #  to hit key i (the probabilities of hitting all adjacent keys are identical).
 
-    #  Your code goes here.
-
     #  Each row of the Emission matrix must sum to 1.
 
     #  Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
-    count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     #  The returned matrix. Initialised with all zero entries.
     b = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -50,25 +48,27 @@ def constructEmissions(pr_correct,adj):
     for x in range(0, 26):
         for y in range(0, 26):
             if adj[x][y] == 1:
-                count[x] = count[x] + 1;
+                count[x] = count[x] + 1
 
     for i in range(0, 26):
         for j in range(0, 26):
             if i == j:
                 # The probability that the texter intended to type a letter is the same
                 # as the probability of going from a state 'X' to the same state 'X'.
-                b[i][j] = pr_correct;
+                b[i][j] = pr_correct
 
             elif adj[i][j] == 1:
                 # All other probabilities of transitioning are identical and must sum to 1.
-                b[i][j] = (1 - pr_correct) / count[i];
+                b[i][j] = (1 - pr_correct) / count[i]
 
             # print(b[i][j], end='');
             # print(", ", end='');
 
         # print("\n");
-    return b;
+    return b
 
+
+# noinspection PyUnusedLocal,PyUnusedLocal
 def constructTransitions(filename):
     #  This function constructs transition matrices for lowercase characters.
     #  It is assumed that the file 'filename' only contains lowercase characters
@@ -87,17 +87,17 @@ def constructTransitions(filename):
     with open('bible.txt', 'r') as myfile:
         text = myfile.read()
 
-    #  Your code goes here.
-
     #  A dict that maps lowercase letters to their index position in the alphabet
-    alphabetDict = {"a":0,  "b":1,  "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7,  "i":8,  "j":9,  "k":10, "l":11, "m":12,
-                    "n":13, "o":14, "p":15, "q":16, "r":17, "s":18, "t":19, "u":20, "v":21, "w":22, "x":23, "y":24, "z":25}
+    alphabetDict = {"a": 0,  "b": 1,  "c": 2,  "d": 3,  "e": 4,  "f": 5,  "g": 6,
+                    "h": 7,  "i": 8,  "j": 9,  "k": 10, "l": 11, "m": 12, "n": 13,
+                    "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20,
+                    "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
 
     #  Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
-    prior = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    prior = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     #  A vector that keeps the total of each row in the matrix p
-    transCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    transCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     #  The returned matrix. Initialised with all zero entries.
     p = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -129,6 +129,7 @@ def constructTransitions(filename):
 
     count = 0
 
+    # noinspection PyUnusedLocal
     previousLetter = " "
     currentLetter = " "
 
@@ -159,7 +160,7 @@ def constructTransitions(filename):
 
         #  Normalise each row of the p matrix (make each row sum to 1)
         for j in range(0, 26):
-                p[i][j] = p[i][j] / transCount[i];
+                p[i][j] = p[i][j] / transCount[i]
 
     #  Debugging code for observing matrix state
 
@@ -178,7 +179,8 @@ def constructTransitions(filename):
     #  Debugging code ends here
     return (p, prior)
 
-def HMM(p,pi,b,y):
+
+def HMM(p, pi, b, y):
     #  This function implements the Viterbi algorithm, to find the most likely
     #  sequence of states given some set of observations.
     #
@@ -191,58 +193,59 @@ def HMM(p,pi,b,y):
     #  OUTPUT
     #  x is the most likely sequence of states, given the inputs.
 
-    n=len(y)
-    m=len(pi)
+    n = len(y)
+    m = len(pi)
 
-    gamma={}
-    phi={}
+    gamma = {}
+    phi = {}
 
     #  Initialise all states using the prior distribution
     for i in range(26):
-        gamma[i,0] = pi[i] * b[i][y[0]]
-        print("",end='');
+        gamma[i, 0] = pi[i] * b[i][y[0]]
+        print("", end='')
 
     #  Time period
-    for t in range(1,n):
+    for t in range(1, n):
 
         #  Current state
         for k in range(26):
-            gamma[k,t]=0;
-            phi[k,t]=0;
+            gamma[k, t] = 0
+            phi[k, t] = 0
 
             #  Next state
             for j in range(26):
                 #  Store for the highest probability gamma value
-                if gamma[k,t] < b[k][y[t]] * p[j][k] * gamma[j,t-1]:
-                    gamma[k,t] = b[k][y[t]] * p[j][k] * gamma[j,t-1]
+                if gamma[k, t] < b[k][y[t]] * p[j][k] * gamma[j, t-1]:
+                    gamma[k, t] = b[k][y[t]] * p[j][k] * gamma[j, t-1]
 
                     #  Store the state that caused the highest probability gamma value
-                    phi[k,t] = j
-                print("",end='');
+                    phi[k, t] = j
+                print("", end='')
 
-    best=0
-    x=[]
+    best = 0
+    x = []
 
     for t in range(n):
         x.append(0)
 
     #  Find the final state in the most likely sequence x(n).
     for k in range(26):
-        if best<=gamma[k,n-1]:
-            best=gamma[k,n-1]
-            x[n-1]=k
+        if best <= gamma[k, n-1]:
+            best = gamma[k, n-1]
+            x[n-1] = k
 
     #  Backtrack through all the highest probability states and save them in the vector x
     #  at the index i
-    for i in range(n-2,-1,-1):
-        x[i] = phi[x[i+1],i+1]
-        print("",end='')
+    for i in range(n-2, -1, -1):
+        x[i] = phi[x[i+1], i+1]
+        print("", end='')
 
     return x
 
+
 def main():
     # The text messages you have received.
-    msgs=[]
+    msgs = []
     msgs.append('cljlx ypi ktxwf a pwfi psti vgicien aabdwucg vpd me and vtiex voe zoicw')
     msgs.append('qe qzby yii tl gp tp yhr cpozwdt fwstqurzby')
     msgs.append('qee ypi xfjvkjv ygetw ib ulur vae')
@@ -291,6 +294,7 @@ def main():
         print(msg)  #display received message
         print(output)  #display decoded message
         print('')
+
 
 if __name__ == "__main__":
     main()
