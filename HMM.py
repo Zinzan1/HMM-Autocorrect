@@ -213,8 +213,8 @@ def HMM(p,pi,b,y):
             #  Next state
             for j in range(26):
                 #  Store for the highest probability gamma value
-                if gamma[k,t] < b[j][y[t]] * p[j][k] * gamma[j,t-1]:
-                    gamma[k,t] = b[j][y[t]] * p[j][k] * gamma[j,t-1]
+                if gamma[k,t] < b[k][y[t]] * p[j][k] * gamma[j,t-1]:
+                    gamma[k,t] = b[k][y[t]] * p[j][k] * gamma[j,t-1]
 
                     #  Store the state that caused the highest probability gamma value
                     phi[k,t] = j
