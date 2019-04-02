@@ -89,12 +89,14 @@ def constructTransitions(filename):
 
     #  Your code goes here.
 
+    #  A dict that maps lowercase letters to their index position in the alphabet
     alphabetDict = {"a":0,  "b":1,  "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7,  "i":8,  "j":9,  "k":10, "l":11, "m":12,
                     "n":13, "o":14, "p":15, "q":16, "r":17, "s":18, "t":19, "u":20, "v":21, "w":22, "x":23, "y":24, "z":25}
 
     #  Vector of zeroes that counts the number of 1s that occur in each row of the matrix adj.
     prior = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
+    #  A vector that keeps the total of each row in the matrix p
     transCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     #  The returned matrix. Initialised with all zero entries.
@@ -130,42 +132,48 @@ def constructTransitions(filename):
     previousLetter = " "
     currentLetter = " "
 
+    #  Loop through the "king james bible" txt file
     for c in text:
+        #  If we reach a space character, we do not count the transition.
         if c == " ":
             previousLetter = " "
             currentLetter = " "
             continue
 
+        #  If we have a valid lowercase letter, then update the prior vector
         elif c in alphabetDict:
             previousLetter = currentLetter
             currentLetter = c
             indexJ = alphabetDict.get(currentLetter)
             prior[indexJ] += 1
             count += 1
-
+            #  If we have two valid letters in a row, we update the transition matrix
             if previousLetter in alphabetDict:
                 indexI = alphabetDict.get(previousLetter)
                 p[indexI][indexJ] += 1
                 transCount[indexI] += 1
 
+    #  Normalise the prior vector
     for i in range(0, 26):
         prior[i] = prior[i] / count
+
+        #  Normalise each row of the p matrix (make each row sum to 1)
         for j in range(0, 26):
                 p[i][j] = p[i][j] / transCount[i];
 
     #  Debugging code for observing matrix state
 
-    for x in range(0, 26):
-        for y in range(0, 26):
-            print(p[x][y], end='');
-            print(", ", end='');
-        print("\n")
-
-    for z in range(0, 26):
-        print(prior[z], end='');
-        print(", ", end='');
-
-    print("\n");
+    # for x in range(0, 26):
+    #     for y in range(0, 26):
+    #         print(p[x][y], end='');
+    #         print(", ", end='');
+    #     print("\n")
+    #
+    # for z in range(0, 26):
+    #     print(prior[z], end='');
+    #     print(", ", end='');
+    #
+    # print("\n");
 
     #  Debugging code ends here
     return (p, prior)
@@ -189,38 +197,44 @@ def HMM(p,pi,b,y):
     gamma={}
     phi={}
 
-    ## You must complete the code below
+    #  Initialise all states using the prior distribution
     for i in range(26):
-        # Your code goes here (initialisation)
         gamma[i,0] = pi[i] * b[i][y[0]]
         print("",end='');
-    # Time period
+
+    #  Time period
     for t in range(1,n):
-        # Current state
+
+        #  Current state
         for k in range(26):
             gamma[k,t]=0;
             phi[k,t]=0;
-            # Next state
+
+            #  Next state
             for j in range(26):
-                # Your code goes here
+                #  Store for the highest probability gamma value
                 if gamma[k,t] < b[j][y[t]] * p[j][k] * gamma[j,t-1]:
                     gamma[k,t] = b[j][y[t]] * p[j][k] * gamma[j,t-1]
+
+                    #  Store the state that caused the highest probability gamma value
                     phi[k,t] = j
                 print("",end='');
+
     best=0
     x=[]
+
     for t in range(n):
         x.append(0)
 
-    # Find the final state in the most likely sequence x(n).
+    #  Find the final state in the most likely sequence x(n).
     for k in range(26):
         if best<=gamma[k,n-1]:
             best=gamma[k,n-1]
             x[n-1]=k
 
+    #  Backtrack through all the highest probability states and save them in the vector x
+    #  at the index i
     for i in range(n-2,-1,-1):
-        # Your code goes here
-
         x[i] = phi[x[i+1],i+1]
         print("",end='')
 
